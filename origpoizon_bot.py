@@ -242,7 +242,8 @@ def bot_message_delivery(message):
 Номер телефона: {phone[message.from_user.id]}
 Ссылка на товар: {link[message.from_user.id]}
 Размер: {size[message.from_user.id]}
-Способ доставки: {delivery[message.from_user.id]}
+Способ доставки: Самовывоз
+Адрес доставки: {delivery[message.from_user.id].replace('Самовывоз: ','')}
 
 Ждем вас снова!""".format(message.from_user), reply_markup = markup)
 
@@ -252,12 +253,14 @@ def bot_message_delivery(message):
 Номер телефона: {phone[message.from_user.id]}
 Ссылка на товар: {link[message.from_user.id]}
 Размер: {size[message.from_user.id]}
-Способ доставки: {delivery[message.from_user.id]}""")
+Способ доставки: Самовывоз
+Адрес доставки: {delivery[message.from_user.id].replace('Самовывоз: ','')}""")
     else:
         cancel = types.ReplyKeyboardMarkup(resize_keyboard = True)
         back1 = types.KeyboardButton('🔴 Начать заново')
         cancel.add(back1)
-        message_address = bot.send_message(message.chat.id, 'Введите адрес доставки:'.format(message.from_user), reply_markup = cancel)
+        message_address = bot.send_message(message.chat.id, """Введите адрес доставки:
+(Город, улица, дом)""".format(message.from_user), reply_markup = cancel)
         bot.register_next_step_handler(message_address,bot_message_address)
         
 def bot_message_address(message):
@@ -283,7 +286,8 @@ def bot_message_address(message):
 Номер телефона: {phone[message.from_user.id]}
 Ссылка на товар: {link[message.from_user.id]}
 Размер: {size[message.from_user.id]}
-Способ доставки: {delivery[message.from_user.id]}
+Способ доставки: СДЭК
+Адрес доставки: {delivery[message.from_user.id]}
 
 Ждем вас снова!""".format(message.from_user), reply_markup = markup)
 
@@ -293,6 +297,7 @@ def bot_message_address(message):
 Номер телефона: {phone[message.from_user.id]}
 Ссылка на товар: {link[message.from_user.id]}
 Размер: {size[message.from_user.id]}
-Способ доставки: {delivery[message.from_user.id]}""")
+Способ доставки: СДЭК
+Адрес доставки: {delivery[message.from_user.id]}""")
 
 bot.polling(none_stop = True)
