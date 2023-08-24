@@ -10,12 +10,12 @@ delivery_moscow = 950       # Доставка до Москвы
 commission = 900            # Комиссия
 
 # Ссылка с инструкцией
-link_ins = 'https://telegra.ph/Instrukciya-08-15-9'
+link_ins = 'https://link.com'
 
 
-id_admin = 140181967 # Идентификатор админа (туда будут отправляться заказы)
+id_admin = 1111111 # Идентификатор админа (туда будут отправляться заказы)
 
-token='6626434237:AAEIGol_ZTOWino6mBraZfeFbml75SFKma4'
+token='ваш токен'
 
 
 
