@@ -10,12 +10,12 @@ delivery_moscow = 950       # Доставка до Москвы
 commission = 900            # Комиссия
 
 # Ссылка с инструкцией
-link_ins = 'https://link.com'
+link_ins = 'https://telegra.ph/Instrukciya-08-15-9'
 
 
-id_admin = 1111111 # Идентификатор админа (туда будут отправляться заказы)
+id_admin = 140181967 # Идентификатор админа (туда будут отправляться заказы)
 
-token='ваш токен'
+token='6626434237:AAEIGol_ZTOWino6mBraZfeFbml75SFKma4'
 
 
 
@@ -218,8 +218,49 @@ def bot_message_size(message):
         markup_delivery.add(item1_delivery, item2_delivery, item3_delivery)
         message_delivery = bot.send_message(message.chat.id, 'Выберите способ доставки:'.format(message.from_user), reply_markup = markup_delivery)
         bot.register_next_step_handler(message_delivery,bot_message_delivery)
-    
+           
 def bot_message_delivery(message):
+    
+    if message.text == '🔴 Начать заново':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard = True)
+        item1 = types.KeyboardButton('🔐 Получить инструкцию')
+        item2 = types.KeyboardButton('💵 Рассчитать стоимость')
+        item3 = types.KeyboardButton('🔥 Оформить заказ')
+        markup.add(item1, item2, item3)
+        bot.send_message(message.chat.id, 'Чем могу помочь?'.format(message.from_user), reply_markup = markup)
+    elif message.text == 'Самовывоз: г.Москва, Хорошевское шоссе 72к4':
+        global delivery
+        delivery[message.from_user.id] = message.text
+        markup = types.ReplyKeyboardMarkup(resize_keyboard = True)
+        item1 = types.KeyboardButton('🔐 Получить инструкцию')
+        item2 = types.KeyboardButton('💵 Рассчитать стоимость')
+        item3 = types.KeyboardButton('🔥 Оформить заказ')
+        markup.add(item1, item2, item3)
+        
+        bot.send_message(message.chat.id, f"""Ваш заказ:
+Фамилия Имя: {name[message.from_user.id]}
+Номер телефона: {phone[message.from_user.id]}
+Ссылка на товар: {link[message.from_user.id]}
+Размер: {size[message.from_user.id]}
+Способ доставки: {delivery[message.from_user.id]}
+
+Ждем вас снова!""".format(message.from_user), reply_markup = markup)
+
+        bot.send_message(id_admin, f"""Новый заказ:
+Телеграм: {username[message.from_user.id]}
+Фамилия Имя: {name[message.from_user.id]}
+Номер телефона: {phone[message.from_user.id]}
+Ссылка на товар: {link[message.from_user.id]}
+Размер: {size[message.from_user.id]}
+Способ доставки: {delivery[message.from_user.id]}""")
+    else:
+        cancel = types.ReplyKeyboardMarkup(resize_keyboard = True)
+        back1 = types.KeyboardButton('🔴 Начать заново')
+        cancel.add(back1)
+        message_address = bot.send_message(message.chat.id, 'Введите адрес доставки:'.format(message.from_user), reply_markup = cancel)
+        bot.register_next_step_handler(message_address,bot_message_address)
+        
+def bot_message_address(message):
     
     if message.text == '🔴 Начать заново':
         markup = types.ReplyKeyboardMarkup(resize_keyboard = True)
@@ -253,6 +294,5 @@ def bot_message_delivery(message):
 Ссылка на товар: {link[message.from_user.id]}
 Размер: {size[message.from_user.id]}
 Способ доставки: {delivery[message.from_user.id]}""")
-
 
 bot.polling(none_stop = True)
