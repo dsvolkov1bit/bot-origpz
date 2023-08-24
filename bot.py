@@ -25,6 +25,7 @@ phone = dict()
 link = dict()
 size = dict()
 delivery = dict()
+x = dict()
 
 bot = telebot.TeleBot(token)
 
@@ -60,21 +61,17 @@ def bot_message(message):
         
         elif message.text == '💵 Рассчитать стоимость':
             
-            markup_cost = types.ReplyKeyboardMarkup(resize_keyboard = True)
-            back1 = types.KeyboardButton('🔴 Начать заново')
-            markup_cost.add(back1)
+            delete = telebot.types.ReplyKeyboardRemove()
                        
-            message_cost = bot.send_message(message.chat.id, 'Введите стоимость товара в Юанях и я посчитаю общую стоимость с доставкой в рублях:'.format(message.from_user))
+            message_cost = bot.send_message(message.chat.id, 'Введите стоимость товара в Юанях и я посчитаю общую стоимость с доставкой в рублях:'.format(message.from_user), reply_markup = delete)
 
             bot.register_next_step_handler(message_cost,bot_message_cost)
                
         elif message.text == '🔥 Оформить заказ':
             
-            markup_cost = types.ReplyKeyboardMarkup(resize_keyboard = True)
-            back1 = types.KeyboardButton('🔴 Начать заново')
-            markup_cost.add(back1)
+            delete = telebot.types.ReplyKeyboardRemove()
                        
-            message_name = bot.send_message(message.chat.id, 'Введите свои данные. Фамилия Имя:'.format(message.from_user))
+            message_name = bot.send_message(message.chat.id, 'Введите свои данные. Фамилия Имя:'.format(message.from_user), reply_markup = delete)
             
             bot.register_next_step_handler(message_name,bot_message_name)
 
@@ -125,7 +122,7 @@ def bot_message_cost(message):
         back1 = types.KeyboardButton('🔴 Начать заново')
         markup_cost.add(back1)
         
-        x = float(message.text.replace(',','.')) * uan + (delivery_china+delivery_moscow+commission)
+        x[message.from_user.id] = float(message.text.replace(',','.')) * uan + (delivery_china+delivery_moscow+commission)
         
         bot.send_message(message.chat.id, f"""Итоговая стоимость:
 
@@ -135,7 +132,7 @@ def bot_message_cost(message):
 Комиссия за услуги: {commission} руб.
 
 Итого:
-{message.text.replace(',','.')}*{uan} + ({delivery_china}+{delivery_moscow}+{commission}) = {x}""".format(message.from_user), reply_markup = markup_cost)
+{message.text.replace(',','.')}*{uan} + ({delivery_china}+{delivery_moscow}+{commission}) = {x[message.from_user.id]}""".format(message.from_user), reply_markup = markup_cost)
     
     except:  
         markup_cost = types.ReplyKeyboardMarkup(resize_keyboard = True)
