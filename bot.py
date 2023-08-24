@@ -69,9 +69,11 @@ def bot_message(message):
                
         elif message.text == '🔥 Оформить заказ':
             
-            delete = telebot.types.ReplyKeyboardRemove()
+            cancel = types.ReplyKeyboardMarkup(resize_keyboard = True)
+            back1 = types.KeyboardButton('🔴 Начать заново')
+            cancel.add(back1)
                        
-            message_name = bot.send_message(message.chat.id, 'Введите свои данные. Фамилия Имя:'.format(message.from_user), reply_markup = delete)
+            message_name = bot.send_message(message.chat.id, 'Введите свои данные. Фамилия Имя:'.format(message.from_user), reply_markup = cancel)
             
             bot.register_next_step_handler(message_name,bot_message_name)
 
@@ -143,39 +145,79 @@ def bot_message_cost(message):
 
 def bot_message_name(message):
     
-    global username
-    username[message.from_user.id] = '@' + message.from_user.username
-    
-    global name
-    name[message.from_user.id] = message.text
-    message_phone = bot.send_message(message.chat.id, 'Продолжим. Теперь нам нужно уточнить номер телефона по которому мы сможем с вами связаться. Введите номер:'.format(message.from_user))
-    bot.register_next_step_handler(message_phone,bot_message_phone)
+    if message.text == '🔴 Начать заново':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard = True)
+        item1 = types.KeyboardButton('🔐 Получить инструкцию')
+        item2 = types.KeyboardButton('💵 Рассчитать стоимость')
+        item3 = types.KeyboardButton('🔥 Оформить заказ')
+        markup.add(item1, item2, item3)
+        bot.send_message(message.chat.id, 'Чем могу помочь?'.format(message.from_user), reply_markup = markup)
+    else:
+        global username
+        username[message.from_user.id] = '@' + message.from_user.username
+        global name
+        name[message.from_user.id] = message.text
+        cancel = types.ReplyKeyboardMarkup(resize_keyboard = True)
+        back1 = types.KeyboardButton('🔴 Начать заново')
+        cancel.add(back1)
+        message_phone = bot.send_message(message.chat.id, 'Продолжим. Теперь нам нужно уточнить номер телефона по которому мы сможем с вами связаться. Введите номер:'.format(message.from_user), reply_markup = cancel)
+        bot.register_next_step_handler(message_phone,bot_message_phone)
     
 def bot_message_phone(message):
     
-    global phone
-    phone[message.from_user.id] = message.text
-    message_link = bot.send_message(message.chat.id, 'Пришлите ссылку на товар, который хотите заказать:'.format(message.from_user))
-    bot.register_next_step_handler(message_link,bot_message_link)
+    if message.text == '🔴 Начать заново':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard = True)
+        item1 = types.KeyboardButton('🔐 Получить инструкцию')
+        item2 = types.KeyboardButton('💵 Рассчитать стоимость')
+        item3 = types.KeyboardButton('🔥 Оформить заказ')
+        markup.add(item1, item2, item3)
+        bot.send_message(message.chat.id, 'Чем могу помочь?'.format(message.from_user), reply_markup = markup)
+    else:
+        global phone
+        phone[message.from_user.id] = message.text
+        cancel = types.ReplyKeyboardMarkup(resize_keyboard = True)
+        back1 = types.KeyboardButton('🔴 Начать заново')
+        cancel.add(back1)
+        message_link = bot.send_message(message.chat.id, 'Пришлите ссылку на товар, который хотите заказать:'.format(message.from_user), reply_markup = cancel)
+        bot.register_next_step_handler(message_link,bot_message_link)
 
 def bot_message_link(message):
     
-    global link
-    link[message.from_user.id] = message.text
-    message_size = bot.send_message(message.chat.id, 'Укажите размер для данного товара:'.format(message.from_user))
-    bot.register_next_step_handler(message_size,bot_message_size)
+    if message.text == '🔴 Начать заново':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard = True)
+        item1 = types.KeyboardButton('🔐 Получить инструкцию')
+        item2 = types.KeyboardButton('💵 Рассчитать стоимость')
+        item3 = types.KeyboardButton('🔥 Оформить заказ')
+        markup.add(item1, item2, item3)
+        bot.send_message(message.chat.id, 'Чем могу помочь?'.format(message.from_user), reply_markup = markup)
+    else:
+        global link
+        link[message.from_user.id] = message.text
+        cancel = types.ReplyKeyboardMarkup(resize_keyboard = True)
+        back1 = types.KeyboardButton('🔴 Начать заново')
+        cancel.add(back1)
+        message_size = bot.send_message(message.chat.id, 'Укажите размер для данного товара:'.format(message.from_user), reply_markup = cancel)
+        bot.register_next_step_handler(message_size,bot_message_size)
     
 def bot_message_size(message):
     
-    global size
-    size[message.from_user.id] = message.text
-    markup_delivery = types.ReplyKeyboardMarkup(resize_keyboard = True)
-    item1_delivery = types.KeyboardButton('Самовывоз: г.Москва, Хорошевское шоссе 72к4')
-    item2_delivery = types.KeyboardButton('Доставка по РФ')
-    item3_delivery = types.KeyboardButton('🔴 Начать заново')
-    markup_delivery.add(item1_delivery, item2_delivery, item3_delivery)
-    message_delivery = bot.send_message(message.chat.id, 'Выберите способ доставки:'.format(message.from_user), reply_markup = markup_delivery)
-    bot.register_next_step_handler(message_delivery,bot_message_delivery)
+    if message.text == '🔴 Начать заново':
+        markup = types.ReplyKeyboardMarkup(resize_keyboard = True)
+        item1 = types.KeyboardButton('🔐 Получить инструкцию')
+        item2 = types.KeyboardButton('💵 Рассчитать стоимость')
+        item3 = types.KeyboardButton('🔥 Оформить заказ')
+        markup.add(item1, item2, item3)
+        bot.send_message(message.chat.id, 'Чем могу помочь?'.format(message.from_user), reply_markup = markup)
+    else:
+        global size
+        size[message.from_user.id] = message.text
+        markup_delivery = types.ReplyKeyboardMarkup(resize_keyboard = True)
+        item1_delivery = types.KeyboardButton('Самовывоз: г.Москва, Хорошевское шоссе 72к4')
+        item2_delivery = types.KeyboardButton('Доставка по РФ')
+        item3_delivery = types.KeyboardButton('🔴 Начать заново')
+        markup_delivery.add(item1_delivery, item2_delivery, item3_delivery)
+        message_delivery = bot.send_message(message.chat.id, 'Выберите способ доставки:'.format(message.from_user), reply_markup = markup_delivery)
+        bot.register_next_step_handler(message_delivery,bot_message_delivery)
     
 def bot_message_delivery(message):
     
