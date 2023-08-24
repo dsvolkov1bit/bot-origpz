@@ -1,2 +1,1 @@
-# bot-origpz
-tg bot
+Здесь все про бот origpoizon
