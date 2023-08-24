@@ -1,0 +1,37 @@
+-- Перенести бот в любую папку, к которой есть доступ у пользователя. Например в root, если пользователь root
+
+"Проверка версии Python и установка библиотек"
+python3
+quit()
+sudo apt update
+sudo apt install python3-pip
+pip3 install pytelegrambotapi
+pip3 install requests
+
+
+"Команды ubuntu для создания сервиса телеграм бота"
+cd etc/systemd/system/
+ls
+sudo apt install vim
+vim origpoizon_bot.service
+
+"Текст сервиса телеграм бота"
+-- Нажать i
+[Service]
+WorkingDirectory= /root/origpoizon_bot
+User=root
+ExecStart=/usr/bin/python3 origpoizon_bot.py
+
+[Install]
+WantedBy=multi-user.target
+EOF
+-- Нажать Esc, :wq
+
+
+"Автозапуск сервиса при загрузке системы"
+systemctl enable origpoizon_bot.service
+
+"Команды для запуска, остановки и проверки статуса сервиса"
+systemctl start origpoizon_bot.service
+systemctl stop origpoizon_bot.service
+systemctl status origpoizon_bot.service
