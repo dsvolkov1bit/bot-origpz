@@ -21,6 +21,8 @@ vim origpoizon_bot.service
 WorkingDirectory= /root/origpoizon_bot
 User=root
 ExecStart=/usr/bin/python3 origpoizon_bot.py
+RestartSec=5s
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
