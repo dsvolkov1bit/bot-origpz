@@ -12,8 +12,7 @@ pip3 install requests
 "Команды ubuntu для создания сервиса телеграм бота"
 cd etc/systemd/system/
 ls
-sudo apt install vim
-vim origpoizon_bot.service
+nano origpoizon_bot.service
 
 "Текст сервиса телеграм бота"
 -- Нажать i
