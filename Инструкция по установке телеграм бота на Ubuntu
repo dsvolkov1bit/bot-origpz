@@ -21,6 +21,7 @@ WorkingDirectory= /root/origpoizon_bot
 User=root
 ExecStart=/usr/bin/python3 origpoizon_bot.py
 RestartSec=5s
+-- RuntimeMaxSec=180s (Перезапуск каждые 3 минуты. Добавлять опционально, если бот что то делает нон-стоп)
 Restart=always
 
 [Install]
@@ -28,6 +29,8 @@ WantedBy=multi-user.target
 EOF
 -- Нажать Esc, :wq
 
+"Перезапустить демон"
+systemctl daemon-reload
 
 "Автозапуск сервиса при загрузке системы"
 systemctl enable origpoizon_bot.service
